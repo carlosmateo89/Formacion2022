@@ -7,8 +7,9 @@
         <entry key="app/src/main/res/drawable/ic_in.xml" value="0.35390625" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3390625" />
         <entry key="app/src/main/res/drawable/ic_out.xml" value="0.35390625" />
-        <entry key="app/src/main/res/layout/activity_scrolling.xml" value="0.16004497751124439" />
+        <entry key="app/src/main/res/layout/activity_scrolling.xml" value="0.67" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.2433758586849853" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.67" />
         <entry key="app/src/main/res/layout/ic_launcher_bank_background.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/item_home.xml" value="0.75" />

@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.atsistemas.formacion2022.common.BaseFragment
+import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.FragmentHomeBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Carlos Mateo Benito on 18/1/22.
@@ -19,6 +22,12 @@ import com.atsistemas.formacion2022.databinding.FragmentHomeBinding
  */
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
+
+    private val vm by viewModel<HomeViewModel>()
+
+    private val homeAdapter by lazy {
+        HomeAdapter()
+    }
     override fun provideBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentHomeBinding {
         return FragmentHomeBinding.inflate(inflater,container,false)
     }
@@ -27,7 +36,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         with(binding){
             rvHome.layoutManager =LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-            rvHome.adapter = HomeAdapter(emptyList())
+            rvHome.adapter = homeAdapter
+        }
+        vm.onInit()
+        setupBinding()
+    }
+
+    private fun setupBinding() {
+        vm.obsListTransactions.observe(viewLifecycleOwner){
+           binding.rvHome.adapter = HomeAdapter(it)
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.atsistemas.formacion2022.common
 
 import android.app.Application
-import com.atsistemas.formacion2022.di.dataModule
+import com.atsistemas.formacion2022.data.di.dataModule
 import com.atsistemas.formacion2022.di.uiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

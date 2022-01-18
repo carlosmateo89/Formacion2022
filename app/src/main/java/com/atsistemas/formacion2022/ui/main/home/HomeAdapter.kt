@@ -15,7 +15,9 @@ import com.atsistemas.formacion2022.databinding.ItemHomeBinding
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-class HomeAdapter(private val transactionList:List<TransactionModel>): RecyclerView.Adapter<HomeAdapter.HomeTransactionViewHolder>() {
+class HomeAdapter(private val transactionList:List<TransactionModel> = emptyList()): RecyclerView.Adapter<HomeAdapter.HomeTransactionViewHolder>() {
+
+    private var mutableTransactionList:MutableList<TransactionModel> = mutableListOf(*transactionList.toTypedArray())
 
     class HomeTransactionViewHolder(val binding : ItemHomeBinding): RecyclerView.ViewHolder(binding.root){
 
@@ -33,16 +35,22 @@ class HomeAdapter(private val transactionList:List<TransactionModel>): RecyclerV
         }
     }
 
+    fun updateList(list:List<TransactionModel>){
+        mutableTransactionList.clear()
+        mutableTransactionList.addAll(list)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeTransactionViewHolder {
-        val binding = ItemHomeBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemHomeBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return HomeTransactionViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: HomeTransactionViewHolder, position: Int) {
-        holder.bind(transactionList[position])
+        holder.bind(mutableTransactionList[position])
     }
 
     override fun getItemCount(): Int {
-        return transactionList.size
+        return mutableTransactionList.size
     }
 }
