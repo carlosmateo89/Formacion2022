@@ -30,6 +30,7 @@ class SplashActivity : BaseActivity() {
         lifecycleScope.launch {
             delay(2000)
             startActivity(Intent(this@SplashActivity,MainActivity::class.java))
+            finish()
         }
 
     }

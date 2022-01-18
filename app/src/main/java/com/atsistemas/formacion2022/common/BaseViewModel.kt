@@ -11,5 +11,5 @@ import androidx.lifecycle.ViewModel
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-class BaseViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 }

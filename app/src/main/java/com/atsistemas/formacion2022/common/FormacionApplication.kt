@@ -1,6 +1,10 @@
 package com.atsistemas.formacion2022.common
 
 import android.app.Application
+import com.atsistemas.formacion2022.di.dataModule
+import com.atsistemas.formacion2022.di.uiModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 /**
  * Created by Carlos Mateo Benito on 17/1/22.
@@ -15,6 +19,13 @@ class FormacionApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidContext(this@FormacionApplication)
+            modules(
+                uiModule,
+                dataModule
+            )
+        }
 
     }
 }
