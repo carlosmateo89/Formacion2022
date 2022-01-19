@@ -11,6 +11,6 @@ import android.content.Context
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-fun Int.getString(context: Context, vararg arg:Any):String{
-    return String.format(context.resources.getString(this),arg)
+fun Int.getString(context: Context, vararg arg:Any?):String{
+    return String.format(context.resources.getString(this),*arg)
 }

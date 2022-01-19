@@ -1,5 +1,7 @@
 package com.atsistemas.formacion2022.data.di
 
+import androidx.room.Room
+import com.atsistemas.formacion2022.data.database.AppDatabase
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
 import com.atsistemas.formacion2022.data.repository.TransactionRepository
 import okhttp3.OkHttpClient
@@ -39,6 +41,15 @@ val dataModule = module {
     }
 
     single {
-       TransactionRepository(get())
+       TransactionRepository(get(),get())
+    }
+
+
+    single {
+        Room.databaseBuilder(
+            get(),
+            AppDatabase::class.java,
+            com.atsistemas.formacion2022.data.BuildConfig.DB_NAME
+        ).build()
     }
 }

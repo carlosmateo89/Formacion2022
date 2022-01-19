@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -34,11 +35,15 @@ android {
     productFlavors{
         mock{
             buildConfigField "String", "SERVER_URL", '"https://mock.com"'
+            buildConfigField "String", "DB_NAME", '"appDB.mock"'
+
             dimension "environment"
         }
 
         pro{
             buildConfigField "String", "SERVER_URL", '"https://code-challenge-e9f47.web.app/"'
+            buildConfigField "String", "DB_NAME", '"appDB"'
+
             dimension "environment"
         }
 
@@ -54,6 +59,15 @@ dependencies {
     // Koin main features for Android
     def koinVersion = "3.1.5"
     implementation "io.insert-koin:koin-android:$koinVersion"
+
+    //Room
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    //Corrutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
