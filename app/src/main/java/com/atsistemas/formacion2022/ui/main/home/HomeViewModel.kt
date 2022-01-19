@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
  */
 class HomeViewModel(
     private val transactionRepository: TransactionRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
 
     private val liveListTransactions by lazy {
@@ -30,11 +30,24 @@ class HomeViewModel(
 
     val obsListTransactions: LiveData<List<TransactionModel>> = liveListTransactions
 
+    val obBolean: LiveData<Boolean> = MutableLiveData()
+
 
     fun onInit() {
         viewModelScope.launch {
-                liveListTransactions.value = transactionRepository.getTransactions()
+            val transactions = withContext(Dispatchers.IO) {
+                transactionRepository.getTransactionsLocally()
+            }
+            liveListTransactions.value = transactions
         }
+    }
+
+    fun onActionDownloadClicked() {
+        viewModelScope.launch {
+            val data = transactionRepository.getTransactionsAndSave()
+            liveListTransactions.value = data
+        }
+
     }
 
 }

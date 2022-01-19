@@ -43,7 +43,7 @@ class HomeAdapter(private val transactionList:List<TransactionModel> = emptyList
                             ivItemHomeAmount.setImageResource(R.drawable.ic_out)
                         }
 
-                        it.fee?.also { _fee ->
+                        it.fee?.toFloat()?.also { _fee ->
                             tvItemHomeFee.text = R.string.home_fee.getString(context,_fee)
                         }
                     }

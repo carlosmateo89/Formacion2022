@@ -90,5 +90,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="home_fee">Tasa: %f</string>
+    <string name="home_fee">Tasa: %.2f</string>
 </resources>

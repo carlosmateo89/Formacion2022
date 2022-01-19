@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.atsistemas.formacion2022.common.BaseFragment
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.FragmentHomeBinding
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -24,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
-    private val vm by viewModel<HomeViewModel>()
+    private val vm by sharedViewModel<HomeViewModel>()
 
     private val homeAdapter by lazy {
         HomeAdapter()
@@ -45,8 +46,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setupBinding() {
-        vm.obsListTransactions.observe(viewLifecycleOwner){
-           homeAdapter.updateList(it)
+        observeData(vm.obsListTransactions){
+            homeAdapter.updateList(it)
         }
     }
 }
