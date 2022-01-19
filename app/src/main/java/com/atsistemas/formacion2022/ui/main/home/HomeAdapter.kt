@@ -18,7 +18,7 @@ import com.atsistemas.formacion2022.databinding.ItemHomeBinding
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-class HomeAdapter(private val transactionList:List<TransactionModel> = emptyList()): RecyclerView.Adapter<HomeAdapter.HomeTransactionViewHolder>() {
+class HomeAdapter(transactionList:List<TransactionModel> = emptyList()): RecyclerView.Adapter<HomeAdapter.HomeTransactionViewHolder>() {
 
     private var mutableTransactionList:MutableList<TransactionModel> = mutableListOf(*transactionList.toTypedArray())
 
@@ -35,7 +35,7 @@ class HomeAdapter(private val transactionList:List<TransactionModel> = emptyList
 
                     kotlin.runCatching {
                         if(it.amount.toFloat()>=0f) {
-                            tvItemHomeAmount.setTextColor(R.color.teal_200.getColor(context))
+                            tvItemHomeAmount.setTextColor(R.color.teal_700.getColor(context))
                             ivItemHomeAmount.setImageResource(R.drawable.ic_in)
                         }
                         else {

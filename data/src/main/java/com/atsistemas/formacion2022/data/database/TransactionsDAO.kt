@@ -1,6 +1,9 @@
 package com.atsistemas.formacion2022.data.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.atsistemas.formacion2022.data.model.TransactionModel
 
 /**
@@ -16,13 +19,13 @@ import com.atsistemas.formacion2022.data.model.TransactionModel
 interface TransactionsDAO {
 
     @Query("SELECT * from ${TransactionModel.NAME}")
-    fun getTransactions(): List<TransactionModel>
+    suspend fun getTransactions(): List<TransactionModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveTransactions(vararg transactionModel: TransactionModel)
+    suspend fun saveTransactions(vararg transactionModel: TransactionModel)
 
     @Query("DELETE from ${TransactionModel.NAME}")
-    fun deleteTransactions()
+    suspend fun deleteTransactions()
 
 
 }
