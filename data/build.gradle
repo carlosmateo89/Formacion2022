@@ -29,6 +29,20 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    flavorDimensions "environment"
+    productFlavors{
+        mock{
+            buildConfigField "String", "SERVER_URL", '"https://mock.com"'
+            dimension "environment"
+        }
+
+        pro{
+            buildConfigField "String", "SERVER_URL", '"https://code-challenge-e9f47.web.app/"'
+            dimension "environment"
+        }
+
+    }
 }
 
 dependencies {

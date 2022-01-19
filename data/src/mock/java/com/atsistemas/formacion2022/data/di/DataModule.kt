@@ -1,5 +1,6 @@
 package com.atsistemas.formacion2022.data.di
 
+import com.atsistemas.formacion2022.data.remote.MockInterceptor
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
 import com.atsistemas.formacion2022.data.repository.TransactionRepository
 import okhttp3.OkHttpClient
@@ -25,6 +26,7 @@ val dataModule = module {
             .connectTimeout(60,TimeUnit.SECONDS)
             .readTimeout(60,TimeUnit.SECONDS)
             .writeTimeout( 60,TimeUnit.SECONDS)
+            .addInterceptor(MockInterceptor(get()))
             .build()
     }
 

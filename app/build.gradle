@@ -32,6 +32,18 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    flavorDimensions "environment"
+    productFlavors{
+        mock{
+            applicationIdSuffix ".mock"
+            dimension "environment"
+        }
+
+        pro{
+            dimension "environment"
+        }
+    }
 }
 
 dependencies {
