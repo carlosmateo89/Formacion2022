@@ -47,7 +47,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvItemHomeAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvItemHomeAmount"
-        tools:srcCompat="@drawable/ic_in" />
+        android:src="@drawable/ic_in" />
 
     <TextView
         android:id="@+id/tvItemHomeFee"

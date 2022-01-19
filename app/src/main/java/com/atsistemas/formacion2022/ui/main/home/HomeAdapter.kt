@@ -3,6 +3,9 @@ package com.atsistemas.formacion2022.ui.main.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.atsistemas.formacion2022.R
+import com.atsistemas.formacion2022.common.getColor
+import com.atsistemas.formacion2022.common.getString
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.ItemHomeBinding
 
@@ -22,12 +25,31 @@ class HomeAdapter(private val transactionList:List<TransactionModel> = emptyList
     class HomeTransactionViewHolder(val binding : ItemHomeBinding): RecyclerView.ViewHolder(binding.root){
 
         fun bind(transactionModel:TransactionModel){
+            val context = itemView.context
             with(binding){
                 transactionModel.also {
                     tvItemHomeDate.text = it.date
                     tvItemHomeAmount.text = it.amount
                     tvItemHomeDescription.text = it.description
                     tvItemHomeFee.text = it.fee
+
+                    kotlin.runCatching {
+                        if(it.amount.toFloat()>=0f) {
+                            tvItemHomeAmount.setTextColor(R.color.teal_200.getColor(context))
+                            ivItemHomeAmount.setImageResource(R.drawable.ic_in)
+                        }
+                        else {
+                            tvItemHomeAmount.setTextColor(R.color.red.getColor(context))
+                            ivItemHomeAmount.setImageResource(R.drawable.ic_out)
+                        }
+
+                        it.fee?.also { _fee ->
+                            tvItemHomeFee.text = R.string.home_fee.getString(context,_fee)
+                        }
+                    }
+
+
+
                 }
 
 

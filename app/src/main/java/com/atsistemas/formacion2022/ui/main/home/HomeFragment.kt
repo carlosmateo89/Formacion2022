@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.atsistemas.formacion2022.common.BaseFragment
 import com.atsistemas.formacion2022.data.model.TransactionModel
@@ -37,6 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         with(binding){
             rvHome.layoutManager =LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
             rvHome.adapter = homeAdapter
+            rvHome.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
         }
         vm.onInit()
         setupBinding()
@@ -44,7 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setupBinding() {
         vm.obsListTransactions.observe(viewLifecycleOwner){
-           binding.rvHome.adapter = HomeAdapter(it)
+           homeAdapter.updateList(it)
         }
     }
 }

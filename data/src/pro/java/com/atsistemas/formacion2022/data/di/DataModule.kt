@@ -1,5 +1,6 @@
 package com.atsistemas.formacion2022.data.di
 
+import com.atsistemas.formacion2022.data.BuildConfig
 import com.atsistemas.formacion2022.data.remote.MockInterceptor
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
 import com.atsistemas.formacion2022.data.repository.TransactionRepository
@@ -25,14 +26,14 @@ val dataModule = module {
             .connectTimeout(60,TimeUnit.SECONDS)
             .readTimeout(60,TimeUnit.SECONDS)
             .writeTimeout( 60,TimeUnit.SECONDS)
-            .addInterceptor(MockInterceptor(get()))
+           // .addInterceptor(MockInterceptor(get()))
             .build()
     }
 
     single <TransactionAPI>{
         Retrofit.Builder()
             .client(get())
-            .baseUrl("https://www.bank.com")
+            .baseUrl(BuildConfig.SERVER_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(TransactionAPI::class.java)
