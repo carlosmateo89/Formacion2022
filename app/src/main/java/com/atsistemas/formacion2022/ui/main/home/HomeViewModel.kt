@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.atsistemas.formacion2022.common.BaseViewModel
+import com.atsistemas.formacion2022.common.SingleLiveEvent
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.data.remote.ResultHandler
 import com.atsistemas.formacion2022.data.repository.TransactionRepository
@@ -35,7 +36,7 @@ class HomeViewModel(
     private val liveShowDialog = MutableLiveData<DialogData>()
     val obsShowDialog:LiveData<DialogData> = liveShowDialog
 
-    private val liveShowMessage = MutableLiveData<String>()
+    private val liveShowMessage = SingleLiveEvent<String>()
     val obsShowMessage:LiveData<String> = liveShowMessage
 
     fun onInit() {
@@ -47,16 +48,16 @@ class HomeViewModel(
             val result = transactionRepository.updateTransactions()
             when(result){
                 is ResultHandler.GenericError -> {
-                    liveShowDialog.value = DialogData(true)
+                    liveShowDialog.value = DialogData(true,result.message)
                 }
                 is ResultHandler.HttpError -> {
-                    liveShowDialog.value = DialogData(true)
+                    liveShowDialog.value = DialogData(true,"Http: ${result.code} ${result.message}")
                 }
                 is ResultHandler.NetworkError -> {
-                    liveShowDialog.value = DialogData(true)
+                    liveShowDialog.value = DialogData(true,"Network error")
                 }
                 is ResultHandler.Success -> {
-
+                    liveShowMessage.value = "Data got from remote successfully"
                 }
             }
         }
@@ -67,6 +68,11 @@ class HomeViewModel(
         viewModelScope.launch {
             transactionRepository.deleteTransactions()
        }
+    }
+
+    fun onActionErrorAcceptClicked() {
+
+        liveShowDialog.value = DialogData(show = false)
     }
 
 }

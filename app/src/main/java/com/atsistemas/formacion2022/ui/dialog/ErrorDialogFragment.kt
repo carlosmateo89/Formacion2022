@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.atsistemas.formacion2022.R
 import com.atsistemas.formacion2022.common.BaseDialogFragment
 import com.atsistemas.formacion2022.databinding.FragmentDialogErrorBinding
@@ -34,7 +35,10 @@ class ErrorDialogFragment : BaseDialogFragment<FragmentDialogErrorBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvDialogErrorDescription.text
+        binding.tvDialogErrorDescription.text = message
+        binding.btDialogErrorTitle.setOnClickListener {
+            acceptListener?.invoke()
+        }
     }
 
 
@@ -52,6 +56,19 @@ class ErrorDialogFragment : BaseDialogFragment<FragmentDialogErrorBinding>() {
             .create()
     }
     */
+
+    fun show(fragmentManager: FragmentManager,tag:String,message:String,acceptListener:()->Unit){
+        (fragmentManager.findFragmentByTag(tag) as? ErrorDialogFragment)?.dismiss()
+        this.message = message
+        this.acceptListener = acceptListener
+        show(fragmentManager,tag)
+    }
+
+    fun dismiss(fragmentManager: FragmentManager){
+        (fragmentManager.findFragmentByTag(tag) as? ErrorDialogFragment)?.also {
+            it.dismiss()
+        }
+    }
 
 
     override fun provideBinding(

@@ -49,8 +49,7 @@ class TransactionRepository(
                     ResultHandler.Success("Success")
                 }
             }
-            ResultHandler.GenericError("Test ")
-            //resultFormatted
+            resultFormatted
         }
     }
 

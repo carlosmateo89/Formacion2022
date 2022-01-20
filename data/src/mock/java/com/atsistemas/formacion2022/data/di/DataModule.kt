@@ -1,10 +1,11 @@
 package com.atsistemas.formacion2022.data.di
 
+import androidx.room.Room
+import com.atsistemas.formacion2022.data.database.AppDatabase
 import com.atsistemas.formacion2022.data.remote.MockInterceptor
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
 import com.atsistemas.formacion2022.data.repository.TransactionRepository
 import okhttp3.OkHttpClient
-import org.koin.android.BuildConfig
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,14 +24,14 @@ val dataModule = module {
 
     single<OkHttpClient> {
         OkHttpClient.Builder()
-            .connectTimeout(60,TimeUnit.SECONDS)
-            .readTimeout(60,TimeUnit.SECONDS)
-            .writeTimeout( 60,TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(MockInterceptor(get()))
             .build()
     }
 
-    single <TransactionAPI>{
+    single<TransactionAPI> {
         Retrofit.Builder()
             .client(get())
             .baseUrl(com.atsistemas.formacion2022.data.BuildConfig.SERVER_URL)
@@ -40,7 +41,15 @@ val dataModule = module {
 
     }
 
+    single { TransactionRepository(get(), get()) }
+
+
+
     single {
-       TransactionRepository(get())
+        Room.databaseBuilder(
+            get(),
+            AppDatabase::class.java,
+            com.atsistemas.formacion2022.data.BuildConfig.DB_NAME
+        ).build()
     }
 }

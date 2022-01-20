@@ -4,6 +4,7 @@ import android.content.Context
 import com.atsistemas.formacion2022.data.R
 import okhttp3.*
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 
 /**
@@ -20,9 +21,15 @@ class MockInterceptor(private val context: Context) : Interceptor {
 
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        generateRandomException()
+
+        val randomResponse = if((0..1).random() == 0)
+            200
+        else
+            500
 
         val response =
-            Response.Builder().protocol(Protocol.HTTP_1_0).code(200).request(chain.request())
+            Response.Builder().protocol(Protocol.HTTP_1_0).code(randomResponse).request(chain.request())
         addResponse(response)
 
         return response.build()
@@ -48,5 +55,13 @@ class MockInterceptor(private val context: Context) : Interceptor {
         }
         br.close()
         return sb.toString()
+    }
+
+
+    fun generateRandomException(){
+        val number = (0..1).random()
+        if(number == 0){
+            throw IOException()
+        }
     }
 }
