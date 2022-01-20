@@ -18,11 +18,14 @@ import com.atsistemas.formacion2022.databinding.ItemHomeBinding
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-class HomeAdapter(transactionList:List<TransactionModel> = emptyList()): RecyclerView.Adapter<HomeAdapter.HomeTransactionViewHolder>() {
+class HomeAdapter(
+    transactionList:List<TransactionModel> = emptyList(),
+    private val listener : (TransactionModel)->Unit)
+    : RecyclerView.Adapter<HomeAdapter.HomeTransactionViewHolder>() {
 
     private var mutableTransactionList:MutableList<TransactionModel> = mutableListOf(*transactionList.toTypedArray())
 
-    class HomeTransactionViewHolder(val binding : ItemHomeBinding): RecyclerView.ViewHolder(binding.root){
+    inner class HomeTransactionViewHolder(val binding : ItemHomeBinding): RecyclerView.ViewHolder(binding.root){
 
         fun bind(transactionModel:TransactionModel){
             val context = itemView.context
@@ -47,12 +50,12 @@ class HomeAdapter(transactionList:List<TransactionModel> = emptyList()): Recycle
                             tvItemHomeFee.text = R.string.home_fee.getString(context,_fee)
                         }
                     }
-
-
-
                 }
 
 
+            }
+            itemView.setOnClickListener {
+                listener(transactionModel)
             }
         }
     }

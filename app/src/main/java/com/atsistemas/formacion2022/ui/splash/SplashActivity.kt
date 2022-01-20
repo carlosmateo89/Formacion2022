@@ -18,15 +18,10 @@ import kotlinx.coroutines.launch
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-class SplashActivity : BaseActivity() {
-
-    private val binding : ActivitySplashBinding by lazy {
-        ActivitySplashBinding.inflate(layoutInflater)
-    }
+class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
         lifecycleScope.launch {
             delay(2000)
             startActivity(Intent(this@SplashActivity,MainActivity::class.java))

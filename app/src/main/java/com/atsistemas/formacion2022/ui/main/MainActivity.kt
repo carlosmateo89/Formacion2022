@@ -11,18 +11,12 @@ import com.atsistemas.formacion2022.databinding.ActivityScrollingBinding
 import com.atsistemas.formacion2022.ui.main.home.HomeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity() {
-
-    private lateinit var binding: ActivityScrollingBinding
+class MainActivity : BaseActivity<ActivityScrollingBinding>(ActivityScrollingBinding::inflate) {
 
     private val vm by viewModel<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityScrollingBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         setSupportActionBar(findViewById(R.id.toolbar))
         binding.toolbarLayout.title = title
         binding.fab.setOnClickListener { view ->

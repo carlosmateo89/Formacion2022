@@ -25,29 +25,26 @@ class HomeViewModel(
 
 
     private val liveListTransactions by lazy {
-        MutableLiveData<List<TransactionModel>>()
+        transactionRepository.getTransactionsLocally()
     }
 
     val obsListTransactions: LiveData<List<TransactionModel>> = liveListTransactions
 
-    val obBolean: LiveData<Boolean> = MutableLiveData()
-
-
     fun onInit() {
-        viewModelScope.launch {
-            val transactions = withContext(Dispatchers.IO) {
-                transactionRepository.getTransactionsLocally()
-            }
-            liveListTransactions.value = transactions
-        }
+
     }
 
     fun onActionDownloadClicked() {
         viewModelScope.launch {
-            val data = transactionRepository.getTransactionsAndSave()
-            liveListTransactions.value = data
+            transactionRepository.getTransactionsAndSave()
         }
 
+    }
+
+    fun onActionTransactionClicked(transactionModel: TransactionModel) {
+        viewModelScope.launch {
+            transactionRepository.deleteTransactions()
+       }
     }
 
 }

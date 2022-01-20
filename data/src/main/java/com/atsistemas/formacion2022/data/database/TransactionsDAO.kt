@@ -1,5 +1,6 @@
 package com.atsistemas.formacion2022.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -19,7 +20,7 @@ import com.atsistemas.formacion2022.data.model.TransactionModel
 interface TransactionsDAO {
 
     @Query("SELECT * from ${TransactionModel.NAME}")
-    suspend fun getTransactions(): List<TransactionModel>
+    fun getTransactions(): LiveData<List<TransactionModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveTransactions(vararg transactionModel: TransactionModel)

@@ -1,5 +1,6 @@
 package com.atsistemas.formacion2022.data.repository
 
+import androidx.lifecycle.LiveData
 import com.atsistemas.formacion2022.data.database.AppDatabase
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
@@ -29,12 +30,14 @@ class TransactionRepository(
         db.transactionsDao().saveTransactions(*transactionModel)
     }
 
-    suspend fun getTransactionsLocally(): List<TransactionModel>{
+    fun getTransactionsLocally(): LiveData<List<TransactionModel>> {
         return db.transactionsDao().getTransactions()
     }
 
     suspend fun deleteTransactions(){
-        db.transactionsDao().deleteTransactions()
+        withContext(Dispatchers.IO) {
+            db.transactionsDao().deleteTransactions()
+        }
     }
 
     suspend fun getTransactionsAndSave():List<TransactionModel>{
