@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.atsistemas.formacion2022.R
+import com.atsistemas.formacion2022.common.formatDate
 import com.atsistemas.formacion2022.common.getColor
 import com.atsistemas.formacion2022.common.getString
 import com.atsistemas.formacion2022.data.model.TransactionModel
@@ -31,7 +32,7 @@ class HomeAdapter(
             val context = itemView.context
             with(binding){
                 transactionModel.also {
-                    tvItemHomeDate.text = it.date
+                    tvItemHomeDate.text = it.date.formatDate()
                     tvItemHomeAmount.text = it.amount
                     tvItemHomeDescription.text = it.description
                     tvItemHomeFee.text = it.fee
