@@ -3,10 +3,12 @@ package com.atsistemas.formacion2022.data.repository
 import androidx.lifecycle.LiveData
 import com.atsistemas.formacion2022.data.database.AppDatabase
 import com.atsistemas.formacion2022.data.model.TransactionModel
+import com.atsistemas.formacion2022.data.remote.ResultHandler
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
+import retrofit2.Response
+import java.io.IOException
 
 /**
  * Created by Carlos Mateo Benito on 18/1/22.
@@ -22,11 +24,37 @@ class TransactionRepository(
     private val db: AppDatabase
 ) {
 
-    suspend fun getTransactionsRemotely():List<TransactionModel>{
+    suspend fun getTransactionsRemotely(): Response<List<TransactionModel>> {
         return transactionAPI.getTransactions()
     }
 
-    suspend fun saveTransactions(vararg transactionModel: TransactionModel){
+    suspend fun updateTransactions(): ResultHandler<String>{
+        return withContext(Dispatchers.IO){
+            val result = safeApiCall {
+                transactionAPI.getTransactions()
+            }
+            val resultFormatted = when(result){
+                is ResultHandler.GenericError ->{
+                    result
+                }
+                is ResultHandler.HttpError -> {
+                    result
+                }
+                is ResultHandler.NetworkError -> {
+                    result
+                }
+                is ResultHandler.Success -> {
+                    val transactions = result.data
+                    saveTransactions(*transactions.toTypedArray())
+                    ResultHandler.Success("Success")
+                }
+            }
+            ResultHandler.GenericError("Test ")
+            //resultFormatted
+        }
+    }
+
+    suspend fun saveTransactions(vararg transactionModel: TransactionModel) {
         db.transactionsDao().saveTransactions(*transactionModel)
     }
 
@@ -34,17 +62,28 @@ class TransactionRepository(
         return db.transactionsDao().getTransactions()
     }
 
-    suspend fun deleteTransactions(){
+    suspend fun deleteTransactions() {
         withContext(Dispatchers.IO) {
             db.transactionsDao().deleteTransactions()
         }
     }
 
-    suspend fun getTransactionsAndSave():List<TransactionModel>{
-        return withContext(Dispatchers.IO) {
-            val data = getTransactionsRemotely()
-            saveTransactions(*data.toTypedArray())
-            data
+    private suspend fun <T> safeApiCall(call: suspend () -> retrofit2.Response<T>): ResultHandler<T> {
+        return try {
+            val response = call()
+            when {
+                response.isSuccessful -> {
+                    ResultHandler.Success(response.body() as T)
+                }
+                else -> {
+                    ResultHandler.HttpError(response.code(), "Http error")
+                }
+            }
+        } catch (e: Throwable) {
+            when (e) {
+                is IOException -> ResultHandler.NetworkError()
+                else -> ResultHandler.GenericError(e.message ?: "")
+            }
         }
     }
 }

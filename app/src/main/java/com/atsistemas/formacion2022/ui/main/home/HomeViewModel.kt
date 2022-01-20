@@ -36,7 +36,21 @@ class HomeViewModel(
 
     fun onActionDownloadClicked() {
         viewModelScope.launch {
-            transactionRepository.getTransactionsAndSave()
+            val result = transactionRepository.updateTransactions()
+            when(result){
+                is ResultHandler.GenericError -> {
+                    liveShowDialog.value = DialogData(true)
+                }
+                is ResultHandler.HttpError -> {
+                    liveShowDialog.value = DialogData(true)
+                }
+                is ResultHandler.NetworkError -> {
+                    liveShowDialog.value = DialogData(true)
+                }
+                is ResultHandler.Success -> {
+
+                }
+            }
         }
 
     }
