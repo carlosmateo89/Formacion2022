@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.atsistemas.formacion2022.common.BaseViewModel
 import com.atsistemas.formacion2022.data.model.TransactionModel
+import com.atsistemas.formacion2022.data.remote.ResultHandler
 import com.atsistemas.formacion2022.data.repository.TransactionRepository
+import com.atsistemas.formacion2022.ui.dialog.DialogData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +31,12 @@ class HomeViewModel(
     }
 
     val obsListTransactions: LiveData<List<TransactionModel>> = liveListTransactions
+
+    private val liveShowDialog = MutableLiveData<DialogData>()
+    val obsShowDialog:LiveData<DialogData> = liveShowDialog
+
+    private val liveShowMessage = MutableLiveData<String>()
+    val obsShowMessage:LiveData<String> = liveShowMessage
 
     fun onInit() {
 

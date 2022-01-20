@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.atsistemas.formacion2022.common.BaseFragment
 import com.atsistemas.formacion2022.databinding.FragmentHomeBinding
+import com.atsistemas.formacion2022.ui.dialog.DialogData
+import com.atsistemas.formacion2022.ui.dialog.ErrorDialogFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -22,6 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
+    private val dialogError by lazy { ErrorDialogFragment() }
     private val vm by sharedViewModel<HomeViewModel>()
 
     private val homeAdapter by lazy {
@@ -47,6 +50,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setupBinding() {
         observeData(vm.obsListTransactions){
             homeAdapter.updateList(it)
+        }
+
+        observeData(vm.obsShowDialog,::onObserveDialogData)
+    }
+
+    private fun onObserveDialogData(dialogData: DialogData) {
+        if(dialogData.show){
+            dialogError.show(parentFragmentManager,HomeFragment::class.java.name)
+        }
+        else{
+            dialogError.dismiss()
         }
     }
 }
