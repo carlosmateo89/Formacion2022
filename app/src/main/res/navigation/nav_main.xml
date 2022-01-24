@@ -9,5 +9,18 @@
         android:id="@+id/homeFragment"
         android:name="com.atsistemas.formacion2022.ui.main.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.atsistemas.formacion2022.ui.main.detail.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="transaction"
+            app:argType="com.atsistemas.formacion2022.data.model.TransactionModel" />
+    </fragment>
 </navigation>

@@ -3,6 +3,7 @@ package com.atsistemas.formacion2022.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 /**
  * Created by Carlos Mateo Benito on 18/1/22.
@@ -24,7 +25,7 @@ data class TransactionModel(
     val description:String?,
     val fee:String?,
     val total:String?
-){
+): Serializable{
 
     companion object TABLE{
         const val NAME = "transactions"
