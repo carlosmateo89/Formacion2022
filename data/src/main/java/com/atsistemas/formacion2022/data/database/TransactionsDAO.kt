@@ -1,10 +1,7 @@
 package com.atsistemas.formacion2022.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.atsistemas.formacion2022.data.model.TransactionModel
 
 /**
@@ -27,6 +24,9 @@ interface TransactionsDAO {
 
     @Query("DELETE from ${TransactionModel.NAME}")
     suspend fun deleteTransactions()
+
+    @Delete
+    suspend fun deleteItemTransaction(transaction:TransactionModel)
 
 
 }

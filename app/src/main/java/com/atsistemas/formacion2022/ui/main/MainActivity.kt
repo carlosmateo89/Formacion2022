@@ -5,6 +5,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.atsistemas.formacion2022.R
 import com.atsistemas.formacion2022.common.BaseActivity
 import com.atsistemas.formacion2022.databinding.ActivityScrollingBinding
@@ -42,5 +43,13 @@ class MainActivity : BaseActivity<ActivityScrollingBinding>(ActivityScrollingBin
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun showLoading() {
+        binding.flMainLoading.visibility = View.VISIBLE
+    }
+
+    fun hideLoading() {
+        binding.flMainLoading.visibility = View.GONE
     }
 }

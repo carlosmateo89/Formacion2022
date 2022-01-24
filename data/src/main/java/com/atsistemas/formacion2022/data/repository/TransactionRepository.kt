@@ -5,6 +5,7 @@ import com.atsistemas.formacion2022.data.database.AppDatabase
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.data.remote.ResultHandler
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
+import com.atsistemas.formacion2022.data.utils.UtilsTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -45,7 +46,9 @@ class TransactionRepository(
                 }
                 is ResultHandler.Success -> {
                     val transactions = result.data
-                    saveTransactions(*transactions.toTypedArray())
+                    val filtered = UtilsTransaction.filterInvalidDateTransactions(transactions)
+                    val ordered = UtilsTransaction.orderByDescending(filtered)
+                    saveTransactions(*ordered.toTypedArray())
                     ResultHandler.Success("Success")
                 }
             }
@@ -64,6 +67,12 @@ class TransactionRepository(
     suspend fun deleteTransactions() {
         withContext(Dispatchers.IO) {
             db.transactionsDao().deleteTransactions()
+        }
+    }
+
+    suspend fun deleteTransaction(transaction:TransactionModel){
+        withContext(Dispatchers.IO){
+            db.transactionsDao().deleteItemTransaction(transaction)
         }
     }
 

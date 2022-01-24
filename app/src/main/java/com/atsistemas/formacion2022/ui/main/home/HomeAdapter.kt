@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.atsistemas.formacion2022.R
-import com.atsistemas.formacion2022.common.formatDate
 import com.atsistemas.formacion2022.common.getColor
 import com.atsistemas.formacion2022.common.getString
+import com.atsistemas.formacion2022.data.common.formatDate
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.ItemHomeBinding
 
