@@ -60,7 +60,6 @@ class HomeViewModel(
             }
             hideLoading()
         }
-
     }
 
     fun onActionTransactionClicked(transactionModel: TransactionModel) {

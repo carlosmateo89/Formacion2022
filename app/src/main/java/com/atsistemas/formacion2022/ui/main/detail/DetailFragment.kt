@@ -8,6 +8,8 @@ import androidx.navigation.fragment.navArgs
 import com.atsistemas.formacion2022.common.BaseFragment
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.FragmentDetailBinding
+import com.atsistemas.formacion2022.ui.main.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**

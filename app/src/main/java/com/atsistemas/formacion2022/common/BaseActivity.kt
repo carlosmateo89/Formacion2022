@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
 
 /**
@@ -23,5 +24,11 @@ abstract class BaseActivity<T:ViewBinding>(val bindingInflater: (LayoutInflater)
         super.onCreate(savedInstanceState)
         binding = bindingInflater.invoke(layoutInflater)
         setContentView(binding.root)
+    }
+
+    protected fun <LD>observeData(liveData: LiveData<LD>, action:(LD)->Unit){
+        liveData.observe(this){
+            action.invoke(it)
+        }
     }
 }

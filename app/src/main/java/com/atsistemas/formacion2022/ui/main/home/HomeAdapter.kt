@@ -32,7 +32,7 @@ class HomeAdapter(
             val context = itemView.context
             with(binding){
                 transactionModel.also {
-                    tvItemHomeDate.text = it.date.formatDate()
+                    tvItemHomeDate.text = it.date
                     tvItemHomeAmount.text = it.amount
                     tvItemHomeDescription.text = it.description
                     tvItemHomeFee.text = it.fee

@@ -8,12 +8,15 @@ import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.ui.dialog.DialogData
 import com.atsistemas.formacion2022.ui.dialog.ErrorDialogFragment
 import com.atsistemas.formacion2022.ui.main.MainActivity
+import com.atsistemas.formacion2022.ui.main.MainViewModel
 import com.atsistemas.formacion2022.ui.main.home.HomeFragment
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -36,6 +39,8 @@ abstract class BaseFragment<T:ViewBinding,VM:BaseViewModel> : Fragment() {
 
     protected abstract val vm:VM
 
+    private val mainVm:MainViewModel by sharedViewModel()
+
     @CallSuper
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +54,7 @@ abstract class BaseFragment<T:ViewBinding,VM:BaseViewModel> : Fragment() {
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        vm.attachMainViewModel(mainVm)
         observeData(vm.obsShowLoading,::onObserveLoading)
         observeData(vm.obsShowDialog,::onObserveDialogData)
         observeData(vm.obsShowMessage,::onObserveMessage)
@@ -56,7 +62,16 @@ abstract class BaseFragment<T:ViewBinding,VM:BaseViewModel> : Fragment() {
 
     }
 
-    protected open fun onObserveNavigation(navData: NavData) {}
+    protected open fun onNavigate(navData:NavData){}
+
+    protected open fun onObserveNavigation(navData: NavData?) {
+        navData?.also {
+            onNavigate(it)
+        }?:also {
+            if(!findNavController().navigateUp())
+                requireActivity().finish()
+        }
+    }
 
     private fun onObserveLoading(show: Boolean) {
             (requireActivity() as? MainActivity)?.also {

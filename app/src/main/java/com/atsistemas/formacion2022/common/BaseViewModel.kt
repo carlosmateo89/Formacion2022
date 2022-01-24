@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.atsistemas.formacion2022.ui.dialog.DialogData
+import com.atsistemas.formacion2022.ui.main.MainViewModel
 
 /**
  * Created by Carlos Mateo Benito on 17/1/22.
@@ -25,9 +26,14 @@ abstract class BaseViewModel : ViewModel() {
     protected val liveShowMessage = SingleLiveEvent<String>()
     val obsShowMessage:LiveData<String> = liveShowMessage
 
-    protected val liveNavigation = SingleLiveEvent<NavData>()
+    protected val liveNavigation = SingleLiveEvent<NavData?>()
     val obsNavigate = liveNavigation
 
+    protected lateinit var mainViewModel: MainViewModel
+
+    fun attachMainViewModel(mainViewModel: MainViewModel){
+        this.mainViewModel = mainViewModel
+    }
 
     protected fun showLoading(){
         liveShowLoading.value = true
@@ -51,6 +57,10 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun navigate(navData: NavData){
         liveNavigation.value = navData
+    }
+
+    protected fun navigateBack(){
+        liveNavigation.value = null
     }
 
 }

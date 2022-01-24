@@ -79,7 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
         }
     }
 
-    override fun onObserveNavigation(navData: NavData) {
+    override fun onNavigate(navData: NavData) {
         when(navData.id){
             HomeViewModel.NAV_DETAIL ->{
 

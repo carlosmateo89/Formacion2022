@@ -8,12 +8,6 @@
     tools:context=".ui.main.MainActivity"
     tools:showIn="@layout/activity_scrolling">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/homeNavHost"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_main"/>
+
 
 </androidx.core.widget.NestedScrollView>

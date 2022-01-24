@@ -16,6 +16,8 @@ class MainActivity : BaseActivity<ActivityScrollingBinding>(ActivityScrollingBin
 
     private val vm by viewModel<HomeViewModel>()
 
+    private val vmMain by viewModel<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -26,6 +28,13 @@ class MainActivity : BaseActivity<ActivityScrollingBinding>(ActivityScrollingBin
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        observeData(vmMain.obsShowFab,::onObserveFab)
+    }
+
+    private fun onObserveFab(show: Boolean) {
+        binding.fab.visibility = if(show) View.VISIBLE else View.GONE
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
