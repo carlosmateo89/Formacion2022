@@ -59,8 +59,4 @@ abstract class BaseViewModel : ViewModel() {
         liveNavigation.value = navData
     }
 
-    protected fun navigateBack(){
-        liveNavigation.value = null
-    }
-
 }

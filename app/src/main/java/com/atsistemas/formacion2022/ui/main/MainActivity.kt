@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.atsistemas.formacion2022.R
 import com.atsistemas.formacion2022.common.BaseActivity
+import com.atsistemas.formacion2022.common.NavData
 import com.atsistemas.formacion2022.databinding.ActivityScrollingBinding
 import com.atsistemas.formacion2022.ui.main.home.HomeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,6 +33,16 @@ class MainActivity : BaseActivity<ActivityScrollingBinding>(ActivityScrollingBin
         }
 
         observeData(vmMain.obsShowFab,::onObserveFab)
+        observeData(vmMain.obsNavigate,::onObserveNav)
+    }
+
+    private fun onObserveNav(navData: NavData?) {
+        navData?.also {
+
+        }?:also {
+            if(!findNavController(R.id.homeNavHost).navigateUp())
+                finish()
+        }
     }
 
     private fun onObserveFab(show: Boolean) {

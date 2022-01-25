@@ -23,4 +23,8 @@ class MainViewModel : BaseViewModel() {
         liveShowFab.value = show
     }
 
+    fun navigateBack(){
+        liveNavigation.value = null
+    }
+
 }

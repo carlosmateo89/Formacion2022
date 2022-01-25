@@ -96,4 +96,8 @@
     <string name="dialog_error_accept">Aceptar</string>
     <string name="menu_transactions">Transacciones</string>
     <string name="menu_profile">Perfil</string>
+    <string name="profile_name">Nombre</string>
+    <string name="profile_surname">Apellido</string>
+    <string name="profile_saved_name">Nombre guardado</string>
+    <string name="profile_saved_surname">Apellido guardado</string>
 </resources>

@@ -67,9 +67,6 @@ abstract class BaseFragment<T:ViewBinding,VM:BaseViewModel> : Fragment() {
     protected open fun onObserveNavigation(navData: NavData?) {
         navData?.also {
             onNavigate(it)
-        }?:also {
-            if(!findNavController().navigateUp())
-                requireActivity().finish()
         }
     }
 
