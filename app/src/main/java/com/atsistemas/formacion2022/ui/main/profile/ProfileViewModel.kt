@@ -1,6 +1,12 @@
 package com.atsistemas.formacion2022.ui.main.profile
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.atsistemas.formacion2022.common.BaseViewModel
+import com.atsistemas.formacion2022.data.repository.ProfileRepository
+import kotlinx.coroutines.launch
 
 /**
  * Created by Carlos Mateo Benito on 25/1/22.
@@ -11,6 +17,22 @@ import com.atsistemas.formacion2022.common.BaseViewModel
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-class ProfileViewModel : BaseViewModel() {
+class ProfileViewModel(private val profileRepository: ProfileRepository) : BaseViewModel() {
+
+    val obsSurname: LiveData<String> = profileRepository.getUserSurname().asLiveData()
+    val obsName: LiveData<String> = profileRepository.getUserName().asLiveData()
+
+    fun onActionNameWritten(name: String) {
+        viewModelScope.launch {
+            profileRepository.saveUserName(name)
+        }
+
+    }
+
+    fun onActionSurnameWritten(surname: String) {
+        viewModelScope.launch {
+            profileRepository.saveUserSurname(surname)
+        }
+    }
 
 }

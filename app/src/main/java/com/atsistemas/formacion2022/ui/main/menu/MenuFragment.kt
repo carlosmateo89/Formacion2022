@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.atsistemas.formacion2022.R
 import com.atsistemas.formacion2022.common.BaseFragment
 import com.atsistemas.formacion2022.common.NavData
 import com.atsistemas.formacion2022.databinding.FragmentMenuBinding
@@ -49,7 +50,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding,MenuViewModel>() {
     override fun onNavigate(navData: NavData) {
        when(navData.id){
             MenuViewModel.NAV_PROFILE->{
-
+                findNavController().navigate(R.id.action_menuFragment_to_profileFragment)
             }
             MenuViewModel.NAV_TRANSACTION->{
                 findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToHomeFragment())

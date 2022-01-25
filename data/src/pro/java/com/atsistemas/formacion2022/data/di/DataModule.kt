@@ -3,6 +3,7 @@ package com.atsistemas.formacion2022.data.di
 import androidx.room.Room
 import com.atsistemas.formacion2022.data.database.AppDatabase
 import com.atsistemas.formacion2022.data.remote.TransactionAPI
+import com.atsistemas.formacion2022.data.repository.ProfileRepository
 import com.atsistemas.formacion2022.data.repository.TransactionRepository
 import okhttp3.OkHttpClient
 import org.koin.android.BuildConfig
@@ -37,13 +38,11 @@ val dataModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(TransactionAPI::class.java)
-
     }
 
     single {
        TransactionRepository(get(),get())
     }
-
 
     single {
         Room.databaseBuilder(
@@ -51,5 +50,9 @@ val dataModule = module {
             AppDatabase::class.java,
             com.atsistemas.formacion2022.data.BuildConfig.DB_NAME
         ).build()
+    }
+
+    single {
+        ProfileRepository(get())
     }
 }

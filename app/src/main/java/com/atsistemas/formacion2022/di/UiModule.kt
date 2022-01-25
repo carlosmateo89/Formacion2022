@@ -4,6 +4,7 @@ import com.atsistemas.formacion2022.ui.main.MainViewModel
 import com.atsistemas.formacion2022.ui.main.detail.DetailViewModel
 import com.atsistemas.formacion2022.ui.main.home.HomeViewModel
 import com.atsistemas.formacion2022.ui.main.menu.MenuViewModel
+import com.atsistemas.formacion2022.ui.main.profile.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -18,21 +19,23 @@ import org.koin.dsl.module
  */
 val uiModule = module {
 
-    viewModel{
+    viewModel {
         HomeViewModel(get())
     }
 
-    viewModel{
+    viewModel {
         DetailViewModel()
     }
 
-    viewModel{
+    viewModel {
         MainViewModel()
     }
 
-    viewModel{
+    viewModel {
         MenuViewModel()
     }
 
-
+    viewModel {
+        ProfileViewModel(get())
+    }
 }
