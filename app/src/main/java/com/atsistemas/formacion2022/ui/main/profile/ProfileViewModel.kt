@@ -27,7 +27,6 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : BaseV
         runBlocking {
             profileRepository.saveUserName(name)
         }
-
     }
 
     fun onActionSurnameWritten(surname: String) {
