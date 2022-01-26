@@ -18,6 +18,9 @@ class MainViewModel : BaseViewModel() {
     val obsShowFab = liveShowFab
 
 
+    override fun onInitialization() {
+
+    }
 
     fun showFab(show:Boolean){
         liveShowFab.value = show

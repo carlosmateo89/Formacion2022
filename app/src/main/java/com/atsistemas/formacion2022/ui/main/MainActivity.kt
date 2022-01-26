@@ -25,11 +25,8 @@ class MainActivity : BaseActivity<ActivityScrollingBinding>(ActivityScrollingBin
         super.onCreate(savedInstanceState)
         setSupportActionBar(findViewById(R.id.toolbar))
         binding.toolbarLayout.title = title
-        binding.fab.setOnClickListener { view ->
-
+        binding.fab.setOnClickListener { _ ->
             vm.onActionDownloadClicked()
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
         }
 
         observeData(vmMain.obsShowFab,::onObserveFab)

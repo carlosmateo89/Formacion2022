@@ -23,7 +23,7 @@
         tools:layout="@layout/fragment_detail">
         <argument
             android:name="transaction"
-            app:argType="com.atsistemas.formacion2022.data.model.TransactionModel" />
+            app:argType="com.atsistemas.domain.model.TransactionModel" />
     </fragment>
     <fragment
         android:id="@+id/menuFragment"

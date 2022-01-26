@@ -20,7 +20,7 @@ import org.koin.dsl.module
 val uiModule = module {
 
     viewModel {
-        HomeViewModel(get())
+        HomeViewModel(get(),get(),get())
     }
 
     viewModel {
@@ -36,6 +36,6 @@ val uiModule = module {
     }
 
     viewModel {
-        ProfileViewModel(get())
+        ProfileViewModel(get(),get(),get(),get())
     }
 }

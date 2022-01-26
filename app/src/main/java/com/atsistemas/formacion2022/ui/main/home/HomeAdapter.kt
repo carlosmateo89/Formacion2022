@@ -2,12 +2,13 @@ package com.atsistemas.formacion2022.ui.main.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.atsistemas.domain.model.TransactionModel
 import com.atsistemas.formacion2022.R
 import com.atsistemas.formacion2022.common.getColor
 import com.atsistemas.formacion2022.common.getString
-import com.atsistemas.formacion2022.data.common.formatDate
-import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.ItemHomeBinding
 
 /**
@@ -20,15 +21,23 @@ import com.atsistemas.formacion2022.databinding.ItemHomeBinding
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
 class HomeAdapter(
-    transactionList:List<TransactionModel> = emptyList(),
     private val listener : (TransactionModel)->Unit)
-    : RecyclerView.Adapter<HomeAdapter.HomeTransactionViewHolder>() {
+    : ListAdapter<TransactionModel,HomeAdapter.HomeTransactionViewHolder>(object:
+    DiffUtil.ItemCallback<TransactionModel>() {
 
-    private var mutableTransactionList:MutableList<TransactionModel> = mutableListOf(*transactionList.toTypedArray())
+    override fun areItemsTheSame(oldItem: TransactionModel, newItem: TransactionModel): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: TransactionModel, newItem: TransactionModel): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+}) {
 
     inner class HomeTransactionViewHolder(val binding : ItemHomeBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(transactionModel:TransactionModel){
+        fun bind(transactionModel: TransactionModel){
             val context = itemView.context
             with(binding){
                 transactionModel.also {
@@ -61,22 +70,12 @@ class HomeAdapter(
         }
     }
 
-    fun updateList(list:List<TransactionModel>){
-        mutableTransactionList.clear()
-        mutableTransactionList.addAll(list)
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeTransactionViewHolder {
         val binding = ItemHomeBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return HomeTransactionViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: HomeTransactionViewHolder, position: Int) {
-        holder.bind(mutableTransactionList[position])
-    }
-
-    override fun getItemCount(): Int {
-        return mutableTransactionList.size
+        holder.bind(getItem(position))
     }
 }

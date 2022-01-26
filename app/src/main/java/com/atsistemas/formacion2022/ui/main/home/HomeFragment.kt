@@ -4,21 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.atsistemas.formacion2022.BuildConfig
-import com.atsistemas.formacion2022.R
+import com.atsistemas.domain.model.TransactionModel
 import com.atsistemas.formacion2022.common.BaseFragment
 import com.atsistemas.formacion2022.common.NavData
-import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.FragmentHomeBinding
-import com.atsistemas.formacion2022.ui.dialog.DialogData
-import com.atsistemas.formacion2022.ui.dialog.ErrorDialogFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -46,7 +40,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecycler()
-        vm.onInit()
         setupBinding()
     }
 
@@ -100,6 +93,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
     }
 
     private fun onObserveList(list: List<TransactionModel>) {
-        homeAdapter.updateList(list)
+        homeAdapter.submitList(list)
     }
 }

@@ -3,6 +3,7 @@ package com.atsistemas.formacion2022.common
 import android.app.Application
 import com.atsistemas.formacion2022.data.di.dataModule
 import com.atsistemas.formacion2022.di.uiModule
+import com.atsistemas.formacion2022.di.usecaseModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -23,7 +24,8 @@ class FormacionApplication : Application() {
             androidContext(this@FormacionApplication)
             modules(
                 uiModule,
-                dataModule
+                dataModule,
+                usecaseModule
             )
         }
 

@@ -8,16 +8,13 @@ import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.ui.dialog.DialogData
 import com.atsistemas.formacion2022.ui.dialog.ErrorDialogFragment
 import com.atsistemas.formacion2022.ui.main.MainActivity
 import com.atsistemas.formacion2022.ui.main.MainViewModel
 import com.atsistemas.formacion2022.ui.main.home.HomeFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Carlos Mateo Benito on 17/1/22.
@@ -55,6 +52,7 @@ abstract class BaseFragment<T:ViewBinding,VM:BaseViewModel> : Fragment() {
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         vm.attachMainViewModel(mainVm)
+        vm.onInit()
         observeData(vm.obsShowLoading,::onObserveLoading)
         observeData(vm.obsShowDialog,::onObserveDialogData)
         observeData(vm.obsShowMessage,::onObserveMessage)

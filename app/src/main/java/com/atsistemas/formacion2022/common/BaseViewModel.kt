@@ -3,8 +3,10 @@ package com.atsistemas.formacion2022.common
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.atsistemas.formacion2022.ui.dialog.DialogData
 import com.atsistemas.formacion2022.ui.main.MainViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Created by Carlos Mateo Benito on 17/1/22.
@@ -58,5 +60,29 @@ abstract class BaseViewModel : ViewModel() {
     protected fun navigate(navData: NavData){
         liveNavigation.value = navData
     }
+
+    protected fun executeUseCase(
+        exceptionAction : (suspend ((Throwable)->Unit))?=null,
+        finalAction : (suspend  ()->Unit)?=null,
+        usecaseAction: suspend ()->Unit
+    ){
+        viewModelScope.launch {
+            try {
+                usecaseAction.invoke()
+            }
+            catch (e:Throwable){
+                exceptionAction?.invoke(e)
+            }
+            finally {
+                finalAction?.invoke()
+            }
+        }
+    }
+
+    fun onInit() {
+        onInitialization()
+    }
+
+    abstract fun onInitialization()
 
 }

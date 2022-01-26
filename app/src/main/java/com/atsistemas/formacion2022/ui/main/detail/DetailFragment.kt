@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import com.atsistemas.domain.model.TransactionModel
 import com.atsistemas.formacion2022.common.BaseFragment
-import com.atsistemas.formacion2022.data.model.TransactionModel
 import com.atsistemas.formacion2022.databinding.FragmentDetailBinding
-import com.atsistemas.formacion2022.ui.main.MainViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -38,8 +36,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         //val transaction = arguments?.getSerializable(TransactionModel::class.java.name) as? TransactionModel
         val transaction = args.transaction
-        vm.onInit(transaction)
-
+        vm.onAttachTransaction(transaction)
         observeData(vm.obsTransaction,::onObserveTransaction)
     }
 

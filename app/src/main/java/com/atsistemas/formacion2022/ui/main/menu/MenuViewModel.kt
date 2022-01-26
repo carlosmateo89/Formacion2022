@@ -19,6 +19,10 @@ class MenuViewModel : BaseViewModel() {
         const val NAV_TRANSACTION = 1
     }
 
+    override fun onInitialization() {
+
+    }
+
     fun onActionTransactionClicked() {
         navigate(NavData(NAV_TRANSACTION))
     }

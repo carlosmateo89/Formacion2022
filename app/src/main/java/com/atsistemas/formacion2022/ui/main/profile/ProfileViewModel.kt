@@ -3,10 +3,12 @@ package com.atsistemas.formacion2022.ui.main.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import com.atsistemas.domain.usecase.GetProfileNameUseCase
+import com.atsistemas.domain.usecase.GetProfileSurnameUseCase
+import com.atsistemas.domain.usecase.SaveProfileNameUseCase
+import com.atsistemas.domain.usecase.SaveProfileSurnameUseCase
 import com.atsistemas.formacion2022.common.BaseViewModel
-import com.atsistemas.formacion2022.data.repository.ProfileRepository
-import kotlinx.coroutines.launch
+import com.atsistemas.formacion2022.data.repository.DataStoreProfileRepository
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -18,21 +20,40 @@ import kotlinx.coroutines.runBlocking
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-class ProfileViewModel(private val profileRepository: ProfileRepository) : BaseViewModel() {
+class ProfileViewModel(
+    private val getProfileNameUseCase: GetProfileNameUseCase,
+    private val getProfileSurnameUseCase: GetProfileSurnameUseCase,
+    private val saveProfileSurnameUseCase: SaveProfileSurnameUseCase,
+    private val saveProfileNameUseCase: SaveProfileNameUseCase
+) : BaseViewModel() {
 
-    val obsSurname: LiveData<String> = profileRepository.getUserSurname().asLiveData()
-    val obsName: LiveData<String> = profileRepository.getUserName().asLiveData()
+    override fun onInitialization() {
+        mainViewModel.showFab(false)
+        executeUseCase {
+            val name = getProfileNameUseCase.execute(Unit)
+            liveName.value = name
+        }
+    }
+
+    val obsSurname: LiveData<String> =
+        getProfileSurnameUseCase.executeSyncInCurrentThread(Unit).asLiveData()
+
+    private val liveName = MutableLiveData<String>()
+    val obsName: LiveData<String> = liveName
 
     fun onActionNameWritten(name: String) {
-        runBlocking {
-            profileRepository.saveUserName(name)
+        liveName.value = name
+        executeUseCase {
+            saveProfileNameUseCase.execute(name)
         }
     }
 
     fun onActionSurnameWritten(surname: String) {
-        runBlocking {
-            profileRepository.saveUserSurname(surname)
-        }
+        saveProfileSurnameUseCase.executeSyncInCurrentThread(surname)
     }
 
+    override fun onCleared() {
+        mainViewModel.showFab(true)
+        super.onCleared()
+    }
 }

@@ -1,12 +1,15 @@
 package com.atsistemas.formacion2022.ui.main.home
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.atsistemas.domain.exception.TransactionExceptions
+import com.atsistemas.domain.model.TransactionModel
+import com.atsistemas.domain.usecase.DeleteTransactionUseCase
+import com.atsistemas.domain.usecase.GetSavedTransactionsUseCase
+import com.atsistemas.domain.usecase.UpdateTransactionsUseCase
 import com.atsistemas.formacion2022.common.BaseViewModel
 import com.atsistemas.formacion2022.common.NavData
-import com.atsistemas.formacion2022.data.model.TransactionModel
-import com.atsistemas.formacion2022.data.remote.ResultHandler
-import com.atsistemas.formacion2022.data.repository.TransactionRepository
 import com.atsistemas.formacion2022.ui.dialog.DialogData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,57 +24,72 @@ import kotlinx.coroutines.launch
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
 class HomeViewModel(
-    private val transactionRepository: TransactionRepository
+    private val updateTransactionsUseCase: UpdateTransactionsUseCase,
+    private val getSavedTransactionsUseCase: GetSavedTransactionsUseCase,
+    private val deleteTransactionUseCase: DeleteTransactionUseCase
 ) : BaseViewModel() {
 
-    companion object{
+    companion object {
         const val NAV_DETAIL = 0
     }
 
-    private val liveListTransactions by lazy {
-        transactionRepository.getTransactionsLocally()
-    }
-
+    private val liveListTransactions: MutableLiveData<List<TransactionModel>> = MutableLiveData()
     val obsListTransactions: LiveData<List<TransactionModel>> = liveListTransactions
 
 
-    fun onInit() {
-
+    override fun onInitialization() {
+        executeUseCase {
+            liveListTransactions.value = getSavedTransactionsUseCase.execute(Unit)
+        }
     }
 
     fun onActionDownloadClicked() {
         showLoading()
-        viewModelScope.launch {
-            val result = transactionRepository.updateTransactions()
-            delay(2000)
-            when(result){
-                is ResultHandler.GenericError -> {
-                    liveShowDialog.value = DialogData(true,result.message)
+        executeUseCase(
+            finalAction = {
+                hideLoading()
+            }
+        ) {
+            val result = updateTransactionsUseCase.execute(Unit)
+            result.onSuccess {
+                liveListTransactions.value = it
+                liveShowMessage.value = "Data got from remote successfully"
+            }.onFailure {
+                handleUpdateException(it)
+            }
+        }
+    }
+
+    private fun handleUpdateException(it: Throwable) {
+        if (it is TransactionExceptions) {
+            when (it) {
+                is TransactionExceptions.GenericError -> {
+                    liveShowDialog.value = DialogData(true, it.message)
                 }
-                is ResultHandler.HttpError -> {
-                    liveShowDialog.value = DialogData(true,"Http: ${result.code} ${result.message}")
+                is TransactionExceptions.HttpError -> {
+                    liveShowDialog.value = DialogData(true, "Http: ${it.code} ${it.message}")
+
                 }
-                is ResultHandler.NetworkError -> {
-                    liveShowDialog.value = DialogData(true,"Network error")
-                }
-                is ResultHandler.Success -> {
-                    liveShowMessage.value = "Data got from remote successfully"
+                is TransactionExceptions.NetworkError -> {
+                    liveShowDialog.value = DialogData(true, "Network error")
                 }
             }
-            hideLoading()
         }
     }
 
     fun onActionTransactionClicked(transactionModel: TransactionModel) {
-        navigate(NavData(NAV_DETAIL,transactionModel))
+        navigate(NavData(NAV_DETAIL, transactionModel))
     }
 
     fun onActionOnItemSwiped(itemPosition: Int) {
-        viewModelScope.launch {
+        executeUseCase {
             val transaction = obsListTransactions.value?.get(itemPosition)
             transaction?.also {
-                transactionRepository.deleteTransaction(it)
+                deleteTransactionUseCase.execute(it)
+                liveListTransactions.value = getSavedTransactionsUseCase.execute(Unit)
             }
+
+
         }
     }
 }

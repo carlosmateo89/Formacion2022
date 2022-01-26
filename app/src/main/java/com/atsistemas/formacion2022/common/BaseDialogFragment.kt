@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
-import com.atsistemas.formacion2022.data.model.TransactionModel
 
 /**
  * Created by Carlos Mateo Benito on 17/1/22.
