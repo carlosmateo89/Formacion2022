@@ -1,15 +1,13 @@
 package com.atsistemas.formacion2022.data.di
 
-import androidx.room.Room
-import com.atsistemas.formacion2022.data.database.AppDatabase
-import com.atsistemas.formacion2022.data.remote.MockInterceptor
-import com.atsistemas.formacion2022.data.remote.TransactionAPI
-import com.atsistemas.formacion2022.data.repository.TransactionRepository
-import okhttp3.OkHttpClient
+import com.atsistemas.domain.repository.EditTransactionRepository
+import com.atsistemas.domain.repository.GetTransactionRepository
+import com.atsistemas.domain.repository.ProfileRepository
+import com.atsistemas.formacion2022.data.remote.MockLocalRepository
+import com.atsistemas.formacion2022.data.remote.MockRemoteRepository
+import com.atsistemas.formacion2022.data.repository.DataStoreProfileRepository
+import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Carlos Mateo Benito on 18/1/22.
@@ -22,34 +20,21 @@ import java.util.concurrent.TimeUnit
  */
 val dataModule = module {
 
-    single<OkHttpClient> {
-        OkHttpClient.Builder()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .addInterceptor(MockInterceptor(get()))
-            .build()
+    single { MockLocalRepository() }
+
+    single<GetTransactionRepository>(qualifier = qualifier(InjectionQualifiers.DB)) {
+        get<MockLocalRepository>()
     }
 
-    single<TransactionAPI> {
-        Retrofit.Builder()
-            .client(get())
-            .baseUrl(com.atsistemas.formacion2022.data.BuildConfig.SERVER_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(TransactionAPI::class.java)
-
+    single<GetTransactionRepository>(qualifier = qualifier(InjectionQualifiers.REMOTE)) {
+        MockRemoteRepository()
     }
 
-    single { TransactionRepository(get(), get()) }
+    single<EditTransactionRepository> {
+        get<MockLocalRepository>()
+    }
 
-
-
-    single {
-        Room.databaseBuilder(
-            get(),
-            AppDatabase::class.java,
-            com.atsistemas.formacion2022.data.BuildConfig.DB_NAME
-        ).build()
+    single<ProfileRepository> {
+        DataStoreProfileRepository(get())
     }
 }
