@@ -1,16 +1,13 @@
 package com.atsistemas.formacion2022.data.di
 
-import androidx.room.Room
-import com.atsistemas.formacion2022.data.database.AppDatabase
-import com.atsistemas.formacion2022.data.remote.TransactionAPI
-import com.atsistemas.formacion2022.data.repository.ProfileRepository
-import com.atsistemas.formacion2022.data.repository.TransactionRepository
-import okhttp3.OkHttpClient
-import org.koin.android.BuildConfig
+import com.atsistemas.domain.repository.EditTransactionRepository
+import com.atsistemas.domain.repository.GetTransactionRepository
+import com.atsistemas.domain.repository.ProfileRepository
+import com.atsistemas.formacion2022.data.database.room.RoomTransactionRepository
+import com.atsistemas.formacion2022.data.remote.retrofit.RetrofitTransactionRepository
+import com.atsistemas.formacion2022.data.repository.DataStoreProfileRepository
+import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Carlos Mateo Benito on 18/1/22.
@@ -23,36 +20,21 @@ import java.util.concurrent.TimeUnit
  */
 val dataModule = module {
 
-    single<OkHttpClient> {
-        OkHttpClient.Builder()
-            .connectTimeout(60,TimeUnit.SECONDS)
-            .readTimeout(60,TimeUnit.SECONDS)
-            .writeTimeout( 60,TimeUnit.SECONDS)
-            .build()
+    single { RoomTransactionRepository(get()) }
+
+    single<GetTransactionRepository>(qualifier = qualifier(InjectionQualifiers.DB)) {
+       get<RoomTransactionRepository>()
     }
 
-    single <TransactionAPI>{
-        Retrofit.Builder()
-            .client(get())
-            .baseUrl(com.atsistemas.formacion2022.data.BuildConfig.SERVER_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(TransactionAPI::class.java)
+    single<GetTransactionRepository>(qualifier = qualifier(InjectionQualifiers.REMOTE)) {
+        RetrofitTransactionRepository()
     }
 
-    single {
-       TransactionRepository(get(),get())
+    single<EditTransactionRepository> {
+        get<RoomTransactionRepository>()
     }
 
-    single {
-        Room.databaseBuilder(
-            get(),
-            AppDatabase::class.java,
-            com.atsistemas.formacion2022.data.BuildConfig.DB_NAME
-        ).build()
-    }
-
-    single {
-        ProfileRepository(get())
+    single<ProfileRepository> {
+        DataStoreProfileRepository(get())
     }
 }

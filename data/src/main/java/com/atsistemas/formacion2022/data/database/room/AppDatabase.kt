@@ -1,9 +1,7 @@
-package com.atsistemas.formacion2022.data.database
+package com.atsistemas.formacion2022.data.database.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.Transaction
-import com.atsistemas.formacion2022.data.model.TransactionModel
 
 /**
  * Created by Carlos Mateo Benito on 19/1/22.
@@ -16,7 +14,7 @@ import com.atsistemas.formacion2022.data.model.TransactionModel
  */
 @Database(
     entities = [
-        TransactionModel::class
+        TransactionDataDB::class
     ], version = 1
 )
 abstract class AppDatabase : RoomDatabase() {

@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ProfileRepository {
 
-    fun saveSurname(surname:String)
+    suspend fun saveSurname(surname:String)
 
-    fun getSurname(): Flow<String>
+    suspend fun getSurname(): Flow<String>
 
-    fun saveName(surname:String)
+    suspend fun saveName(name:String)
 
-    fun getName():String
+    suspend  fun getName():String
 }

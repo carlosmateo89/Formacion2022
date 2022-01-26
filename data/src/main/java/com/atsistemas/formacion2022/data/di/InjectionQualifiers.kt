@@ -1,6 +1,4 @@
-package com.atsistemas.domain.repository
-
-import com.atsistemas.domain.model.TransactionModel
+package com.atsistemas.formacion2022.data.di
 
 /**
  * Created by Carlos Mateo Benito on 26/1/22.
@@ -11,8 +9,7 @@ import com.atsistemas.domain.model.TransactionModel
  *
  * @author <a href=“mailto:apps.carmabs@gmail.com”>Carlos Mateo Benito</a>
  */
-interface GetTransactionRepository {
-
-    suspend fun getTransactions():Result<List<TransactionModel>>
-
+object InjectionQualifiers {
+    const val DB = "DB"
+    const val REMOTE = "REMOTE"
 }

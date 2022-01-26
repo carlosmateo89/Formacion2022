@@ -1,6 +1,5 @@
-package com.atsistemas.formacion2022.data.remote
+package com.atsistemas.formacion2022.data.remote.retrofit
 
-import com.atsistemas.formacion2022.data.model.TransactionModel
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -16,7 +15,7 @@ import retrofit2.http.GET
 interface TransactionAPI {
 
     @GET("transactions.json")
-    suspend fun getTransactions(): Response<List<TransactionModel>>
+    suspend fun getTransactions(): Response<List<TransactionDataRemote>>
 
 
 }

@@ -13,8 +13,8 @@ import com.atsistemas.domain.model.TransactionModel
  */
 interface EditTransactionRepository {
 
-    fun deleteTransaction(transactionModel: TransactionModel)
+    suspend fun deleteTransaction(transactionModel: TransactionModel)
 
-    fun saveTransactions(vararg transactions:TransactionModel)
+    suspend fun saveTransactions(vararg transactions:TransactionModel)
 
 }
