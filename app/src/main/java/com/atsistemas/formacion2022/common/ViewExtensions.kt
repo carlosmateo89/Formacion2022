@@ -14,7 +14,9 @@ import android.widget.EditText
  */
 fun EditText.setText(text:String, watcher: TextWatcher){
     removeTextChangedListener(watcher)
-    setText(text)
-    setSelection(text.length)
+    if(text!=this.text.toString()) {
+        setText(text)
+        setSelection(text.length)
+    }
     addTextChangedListener(watcher)
 }

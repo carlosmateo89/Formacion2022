@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.atsistemas.formacion2022.common.BaseViewModel
 import com.atsistemas.formacion2022.data.repository.ProfileRepository
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * Created by Carlos Mateo Benito on 25/1/22.
@@ -23,14 +24,14 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : BaseV
     val obsName: LiveData<String> = profileRepository.getUserName().asLiveData()
 
     fun onActionNameWritten(name: String) {
-        viewModelScope.launch {
+        runBlocking {
             profileRepository.saveUserName(name)
         }
 
     }
 
     fun onActionSurnameWritten(surname: String) {
-        viewModelScope.launch {
+        runBlocking {
             profileRepository.saveUserSurname(surname)
         }
     }
